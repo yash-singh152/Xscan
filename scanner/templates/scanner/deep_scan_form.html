@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Deep Scan | VulnScanner{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 4rem auto;">
+    <div class="card">
+        <h2 style="font-family: 'Outfit'; margin-bottom: 1rem;">🔍 Start Deep Scan</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Enter a website URL for a comprehensive security
+            analysis.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="target_url">Target URL</label>
+                <input type="url" id="target_url" name="target_url" placeholder="https://example.com" required>
+            </div>
+            <!-- Deep scan type -->
+            <input type="hidden" name="scan_type" value="Deep">
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;">🚀 Start
+                Deep Scan</button>
+        </form>
+
+        <div
+            style="margin-top: 2rem; padding: 1.5rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--text-secondary); text-align: left;">
+            <p style="margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Comprehensive checks:</p>
+            <ul style="list-style: '✔ '; padding-left: 1.25rem;">
+                <li>Cross-Site Scripting (XSS)</li>
+                <li>SQL Injection (SQLi)</li>
+                <li>Insecure Security Headers</li>
+                <li>Port Scanning</li>
+                <li>SSL/TLS Weaknesses</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

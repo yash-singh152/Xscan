@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Signal Analysis | {{ scan.target_url }}{% endblock %}
+
+{% block content %}
+<div class="scanline"></div>
+
+<div class="header-actions"
+    style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+    <div>
+        <div
+            style="color: var(--accent); font-weight: 700; letter-spacing: 4px; font-size: 0.7rem; margin-bottom: 0.5rem; text-transform: uppercase; font-family: var(--font-mono);">
+            [ ASSESS_REPORT_NODES ]
+        </div>
+        <h2
+            style="font-family: 'Outfit', sans-serif; font-size: 3rem; margin: 0; text-shadow: 0 0 20px var(--accent-glow); font-weight: 900; letter-spacing: -1px;">
+            Target Analysis
+        </h2>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+        <a href="{% url 'download_report' scan.id %}" class="btn btn-primary"
+            style="background: var(--success); color: #000; box-shadow: 0 0 15px var(--success-glow); border-radius: 0.5rem; padding: 0.75rem 1.5rem;">
+            <span style="margin-right: 8px;">📊</span> EXPORT_PDF
+        </a>
+    </div>
+</div>
+
+<!-- Target Metadata -->
+<div class="card glass-card animate-enter animate-delay-100"
+    style="margin-bottom: 2.5rem; border-left: 4px solid var(--accent); background: rgba(0, 0, 0, 0.4);">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; padding: 1rem;">
+        <div>
+            <div
+                style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.75rem; font-family: var(--font-mono);">
+                NETWORK_TARGET
+            </div>
+            <div style="font-weight: 700; font-size: 1.1rem; color: var(--accent); font-family: var(--font-mono);">
+                {{ scan.target_url }}
+            </div>
+        </div>
+        <div>
+            <div
+                style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.75rem; font-family: var(--font-mono);">
+                SIGNAL_STATUS
+            </div>
+            <div>
+                <span class="badge status-{{ scan.status|lower }}" style="font-size: 0.65rem;">
+                    {{ scan.status|capfirst }}
+                </span>
+            </div>
+        </div>
+        <div>
+            <div
+                style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.75rem; font-family: var(--font-mono);">
+                CAPTURE_DATE
+            </div>
+            <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">
+                {{ scan.created_at|date:"M d, Y • H:i" }}
+            </div>
+        </div>
+        <div>
+            <div
+                style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.75rem; font-family: var(--font-mono);">
+                SCAN_PROTOCOL
+            </div>
+            <div style="font-weight: 800; color: var(--accent); letter-spacing: 1px;">
+                {{ scan.scan_type|upper }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Section -->
+<div class="card glass-card animate-enter animate-delay-200"
+    style="padding: 0; overflow: hidden; border: 1px solid var(--border);">
+    <div
+        style="display: flex; align-items: center; gap: 1rem; padding: 1.5rem 2rem; background: rgba(0, 243, 255, 0.05); border-bottom: 1px solid var(--border);">
+        <div
+            style="width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent-glow);">
+        </div>
+        <h3
+            style="margin: 0; font-family: 'Outfit'; font-size: 1.25rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">
+            Security Findings Terminal
+        </h3>
+    </div>
+
+    {% if vulnerabilities %}
+    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 2rem;">
+        {% for v in vulnerabilities %}
+        <div
+            style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+            <!-- Finding Header -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem;">
+                        [Finding #{{ forloop.counter }}]
+                    </span>
+                    <span style="font-weight: 700; font-size: 1.125rem; color: var(--text-primary);">
+                        {{ v.title }}
+                    </span>
+                </div>
+                <span class="badge sev-{{ v.severity|lower }}">
+                    {{ v.severity }}
+                </span>
+            </div>
+
+            <!-- Finding Body -->
+            <div style="padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+                <div>
+                    <div
+                        style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; font-family: var(--font-mono);">
+                        <span style="color: var(--accent);">▶</span> THREAT_DESCRIPTION
+                    </div>
+                    <p
+                        style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin: 0; font-family: 'Inter';">
+                        {{ v.description }}
+                    </p>
+                </div>
+                <div>
+                    <div
+                        style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; font-family: var(--font-mono);">
+                        <span style="color: var(--success);">√</span> COUNTERMEASURES
+                    </div>
+                    <div
+                        style="padding: 1.25rem; background: rgba(0, 255, 0, 0.03); border: 1px solid rgba(0, 255, 0, 0.1); border-radius: 8px;">
+                        <p
+                            style="font-size: 0.95rem; color: var(--success); line-height: 1.6; margin: 0; font-family: var(--font-mono);">
+                            {{ v.mitigation }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 6rem 2rem;">
+        <div
+            style="color: var(--success); font-size: 5rem; margin-bottom: 2rem; text-shadow: 0 0 30px var(--success-glow);">
+            🛡️</div>
+        <h3
+            style="color: var(--success); margin-bottom: 1rem; font-family: 'Outfit'; font-size: 2rem; font-weight: 800; letter-spacing: -1px;">
+            Security Integrity Nominal
+        </h3>
+        <p
+            style="color: var(--text-muted); max-width: 450px; margin: 0 auto; line-height: 1.6; font-size: 1rem; font-family: var(--font-mono);">
+            > No high-risk vectors detected.<br>
+            > Perimeter integrity maintained.<br>
+            > [ ASSESSMENT COMPLETE ]
+        </p>
+    </div>
+    {% endif %}
+</div>
+
+<div
+    style="margin-top: 3rem; text-align: center; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 2px; font-weight: 500;">
+    &copy; 2026 XSCAN_RECON_MODULES v4.0.2 // SECURE CONNECTION
+</div>
+{% endblock %}

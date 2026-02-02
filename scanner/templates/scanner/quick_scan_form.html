@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Quick Scan | VulnScanner{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 4rem auto;">
+    <div class="card">
+        <h2 style="font-family: 'Outfit'; margin-bottom: 1rem;">⚡ Start Quick Scan</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Enter a website URL for a rapid vulnerability
+            assessment.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="target_url">Target URL</label>
+                <input type="url" id="target_url" name="target_url" placeholder="https://example.com" required>
+            </div>
+            <!-- Standard scan type hidden for processing logic or handled by view -->
+            <input type="hidden" name="scan_type" value="Quick">
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem;">🚀 Start
+                Quick Scan</button>
+        </form>
+
+        <div
+            style="margin-top: 2rem; padding: 1.5rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--text-secondary); text-align: left;">
+            <p style="margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Checks include:</p>
+            <ul style="list-style: '✔ '; padding-left: 1.25rem;">
+                <li>Basic Security Headers</li>
+                <li>SSL/TLS Configuration</li>
+                <li>Server Information</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

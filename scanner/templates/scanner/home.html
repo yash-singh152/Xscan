@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}XScan | Advanced Website Vulnerability Scanner{% endblock %}
+
+{% block content %}
+<div class="scanline"></div>
+<div class="homepage" style="max-width: 1200px; margin: 0 auto;">
+
+    <!-- Hero Section -->
+    <section class="hero-split animate-enter">
+        <div class="hero-content">
+            <h1 class="hero-title">Website Security <br><span style="color: var(--accent);">Analyzed.</span></h1>
+            <p class="hero-description">
+                Advanced vulnerability reconnaissance for modern web assets.
+                Identify critical risks before they are exploited.
+            </p>
+
+            <div style="display: flex; gap: 2rem; align-items: center;">
+                <div class="badge badge-info" style="padding: 0.75rem 1.5rem; border-radius: 2rem;">
+                    2 Daily Scans Free
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.875rem; font-family: var(--font-mono);">
+                    [ STATUS: NOMINAL ]
+                </div>
+            </div>
+        </div>
+
+        <div class="scanner-container">
+            <div class="scanner-card animate-enter animate-delay-200">
+                <div class="scanner-tabs">
+                    <div class="scanner-tab active">Quick Scan</div>
+                    <div class="scanner-tab" onclick="window.location.href='{% url 'login' %}'">Deep Scan</div>
+                </div>
+                <div class="scanner-body">
+                    <form method="POST" action="{% url 'scan_form' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="scan_type" value="Quick">
+                        <div class="form-group">
+                            <label
+                                style="font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 2px;">Target_URL</label>
+                            <div class="scanner-input-group">
+                                <div class="scanner-protocol">HTTPS://</div>
+                                <input type="text" name="target_url" class="scanner-input" placeholder="example.com"
+                                    required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">
+                            Start Assessment
+                        </button>
+                    </form>
+                    <div
+                        style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.75rem; line-height: 1.6; font-family: var(--font-mono);">
+                        > Running passive footprinting...<br>
+                        > Checking security headers...<br>
+                        > Auditing SSL/TLS certificates...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 5rem;"
+        class="animate-enter animate-delay-300">
+        <div class="card glass-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px var(--accent-glow));">🔍
+            </div>
+            <h3 style="margin-bottom: 1rem; color: var(--accent);">Cyber Recon</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">Recursive crawling engine
+                identifies all exposed surfaces.</p>
+        </div>
+        <div class="card glass-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px var(--success-glow));">
+                🛡️</div>
+            <h3 style="margin-bottom: 1rem; color: var(--success);">Wall Hack</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">Precision payloads that
+                verify exploitability without site impact.</p>
+        </div>
+        <div class="card glass-card">
+            <div style="font-size: 2.5rem; margin-bottom: 1.5rem; filter: drop-shadow(0 0 10px var(--danger-glow));">📄
+            </div>
+            <h3 style="margin-bottom: 1rem; color: var(--danger);">Net Audit</h3>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6;">Enterprise-grade PDF reports
+                for regulatory compliance.</p>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section
+        style="text-align: center; padding: 5rem; background: var(--bg-card); border-radius: 2rem; border: 1px solid var(--border); box-shadow: inset 0 0 20px var(--accent-glow);"
+        class="animate-enter animate-delay-400">
+        <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 1.5rem; letter-spacing: -1px;">Secure your
+            perimeter.</h2>
+        <p
+            style="color: var(--text-secondary); margin-bottom: 3rem; max-width: 500px; margin-left: auto; margin-right: auto; font-size: 1.125rem;">
+            Join the digital defense. Start your first reconnaissance cycle today.
+        </p>
+        <a href="{% url 'register' %}" class="btn btn-primary"
+            style="padding: 1.25rem 4rem; border-radius: 3rem; font-size: 1rem;">
+            Initialize Account
+        </a>
+    </section>
+</div>
+{% endblock %}

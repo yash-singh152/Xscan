@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="scanline"></div>
+
+<div class="auth-container" style="max-width: 600px; margin: 4rem auto;">
+    <div class="card glass-card animate-enter"
+        style="text-align: center; padding: 3rem; border-top: 4px solid var(--accent);">
+        <div
+            style="color: var(--accent); font-weight: 700; letter-spacing: 3px; margin-bottom: 1.5rem; font-family: 'Outfit', sans-serif; font-size: 1rem; text-shadow: 0 0 10px var(--accent-glow);">
+            SCAN IN PROGRESS</div>
+
+        <h2 style="font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Analyzing {{ scan.target_url }}</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2.5rem;" id="progress-text">Initializing security
+            modules...</p>
+
+        <!-- Progress Bar -->
+        <div
+            style="background: rgba(255, 255, 255, 0.05); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border);">
+            <div id="progress-bar"
+                style="width: 0%; height: 100%; background: var(--accent); transition: width 0.5s ease; box-shadow: 0 0 15px var(--accent-glow);">
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--text-secondary);">
+            <span id="percent-label">0% Complete</span>
+            <span id="status-label" style="color: var(--accent);">Running Terminal...</span>
+        </div>
+
+        <div
+            style="margin-top: 3rem; font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; font-family: monospace;">
+            <p>> STAGE: RECONNAISSANCE</p>
+            <p>> CONNECTION: ENCRYPTED</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const scanId = "{{ scan.id }}";
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const percentLabel = document.getElementById('percent-label');
+
+    function updateProgress() {
+        fetch(`/scan/${scanId}/status/`)
+            .then(response => response.json())
+            .then(data => {
+                const progress = data.progress;
+                progressBar.style.width = progress + '%';
+                percentLabel.textContent = progress + '% Complete';
+
+                if (progress < 30) {
+                    progressText.textContent = "Crawling attack surface...";
+                } else if (progress < 60) {
+                    progressText.textContent = "Probing for header vulnerabilities...";
+                } else if (progress < 85) {
+                    progressText.textContent = "Scanning for sensitive file exposures...";
+                } else {
+                    progressText.textContent = "Finalizing results and generating report...";
+                }
+
+                if (data.status === 'completed') {
+                    window.location.href = data.detail_url;
+                } else if (data.status === 'failed') {
+                    progressText.textContent = "Scan failed. Redirecting to dashboard...";
+                    setTimeout(() => {
+                        window.location.href = "/dashboard/";
+                    }, 2000);
+                } else {
+                    // Poll every 1 second
+                    setTimeout(updateProgress, 1000);
+                }
+            })
+            .catch(error => {
+                console.error('Error polling status:', error);
+                setTimeout(updateProgress, 2000);
+            });
+    }
+
+    // Start polling
+    updateProgress();
+</script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VulnScanner{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5.0">
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                X<span style="color: var(--accent); text-shadow: 0 0 10px var(--accent-glow);">SCAN</span>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-title">Menu</div>
+                <ul>
+                    <li><a href="{% url 'dashboard' %}"
+                            class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
+                    </li>
+                    <li><a href="{% url 'quick_scan' %}"
+                            class="nav-item {% if request.resolver_match.url_name == 'quick_scan' %}active{% endif %}">Quick
+                            Scan</a></li>
+                    <li><a href="{% url 'deep_scan' %}"
+                            class="nav-item {% if request.resolver_match.url_name == 'deep_scan' %}active{% endif %}">Deep
+                            Scan</a></li>
+                    <li><a href="{% url 'scan_list' %}"
+                            class="nav-item {% if request.resolver_match.url_name == 'scan_list' %}active{% endif %}">Reports</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <nav class="nav-section">
+                <div class="nav-title">Additional</div>
+                <ul>
+                    <li><a href="{% url 'home' %}" class="nav-item">Go to Home</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="nav-item">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}" class="nav-item">Login</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                {% if user.is_authenticated %}
+                <div class="user-profile">
+                    <a href="{% url 'profile' %}"
+                        style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-primary); text-decoration: none; font-weight: 600; font-size: 0.875rem;">
+                        <div
+                            style="width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem;">
+                            U</div>
+                        {{ username }}
+                    </a>
+                </div>
+                {% endif %}
+            </header>
+
+            <div class="content">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="badge badge-{{ message.tags }}"
+                    style="margin-bottom: 1rem; display: block; padding: 1rem; border-radius: 0.5rem;">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
