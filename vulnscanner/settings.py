@@ -89,14 +89,29 @@ WSGI_APPLICATION = 'vulnscanner.wsgi.application'
 
 
 # Database
-# Use DATABASE_URL from environment for production, fallback to SQLite for local development
+# Use DATABASE_URL from environment for production, fallback to SQLite if not set
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get("DATABASE_URL")
-    )
-}
+if DATABASE_URL:
+    try:
+        DATABASES = {
+            'default': dj_database_url.parse(DATABASE_URL)
+        }
+    except Exception:
+        # Fallback if URL is invalid (e.g. during some build stages if env not fully ready)
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
