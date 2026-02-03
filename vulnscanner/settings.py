@@ -157,6 +157,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+
 # WhiteNoise storage for efficient static file serving
 STORAGES = {
     "default": {
@@ -166,6 +171,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+
 
 # Email configuration for production (SMTP)
 # IMPORTANT: To receive actual emails, you MUST fill in YOUR_EMAIL and YOUR_APP_PASSWORD below.
