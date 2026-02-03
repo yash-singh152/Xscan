@@ -29,7 +29,12 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-l=18f!y+o$8)jhqc!oq@ix+k%s0pi01+01!lv$l_yuvgf@ik=_')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+# SECURITY WARNING: don't run with debug turned on in production!
+# Automatically set DEBUG to False if running on Render
+if 'RENDER' in os.environ:
+    DEBUG = False
+else:
+    DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*', 'preadherent-hookier-jona.ngrok-free.dev', '.render.com', '.vercel.app', '.railway.app']
 

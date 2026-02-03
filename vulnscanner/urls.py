@@ -22,3 +22,9 @@ urlpatterns = [
     path('', include('scanner.urls')),
     path("accounts/", include("accounts.urls")),
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+# Serve static files in development or if needed explicitly
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
