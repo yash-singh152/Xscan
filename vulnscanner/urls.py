@@ -24,7 +24,10 @@ urlpatterns = [
 ]
 
 from django.conf import settings
-from django.conf.urls.static import static
+from django.views.static import serve
+from django.urls import re_path
 
-# Serve static files in development or if needed explicitly
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Force static file serving (Fallback for Render if Whitenoise fails)
+urlpatterns += [
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+]
