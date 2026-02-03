@@ -90,11 +90,11 @@ WSGI_APPLICATION = 'vulnscanner.wsgi.application'
 
 # Database
 # Use DATABASE_URL from environment for production, fallback to SQLite for local development
+
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        conn_health_checks=True,
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL")
     )
 }
 
@@ -138,7 +138,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # WhiteNoise storage for efficient static file serving
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 
 # Email configuration for production (SMTP)
 # IMPORTANT: To receive actual emails, you MUST fill in YOUR_EMAIL and YOUR_APP_PASSWORD below.
