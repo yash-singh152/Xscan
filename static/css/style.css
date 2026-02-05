@@ -978,3 +978,46 @@ tr:last-child td {
         padding: 1.5rem;
     }
 }
+
+/* Responsive Scan List */
+.scan-item-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.scan-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.scan-meta-group {
+    display: flex;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .scan-item-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .scan-item-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .scan-meta-group {
+        width: 100%;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .scan-list-item {
+        padding: 1rem !important;
+    }
+}

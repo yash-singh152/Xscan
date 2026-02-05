@@ -6,13 +6,16 @@ from django.contrib.auth.forms import AuthenticationForm
 
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
     if request.method == "POST":
         username = request.POST.get("username", "").strip()
         email = request.POST.get("email", "").strip()
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
-        if User.objects.filter(username=username).exists():
+        if User.objects.filter(username__iexact=username).exists():
             messages.error(request, "Username already exists")
             return redirect("register")
 

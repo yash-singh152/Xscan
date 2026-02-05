@@ -26,63 +26,66 @@
     {% if scans %}
     <div style="display: flex; flex-direction: column; gap: 1rem;">
         {% for scan in scans %}
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem; background: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border); transition: all 0.3s;"
-            onmouseover="this.style.borderColor='var(--accent)';" onmouseout="this.style.borderColor='var(--border)';"
-            class="scan-list-item">
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <div
-                    style="width: 48px; height: 48px; border-radius: 12px; background: rgba(0, 243, 255, 0.05); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 243, 255, 0.1);">
-                    <span style="font-size: 1.5rem;">🛰️</span>
-                </div>
-                <div>
-                    <div style="font-weight: 700; font-size: 1.125rem; margin-bottom: 4px; color: var(--text-primary); cursor: pointer;"
-                        onclick="location.href='{% url 'scan_detail' scan.id %}'">{{ scan.target_url }}</div>
+        <div class="scan-list-item glass-card"
+            style="padding: 1.5rem; margin-bottom: 1rem; position: relative; overflow: hidden;">
+            <div class="scan-item-content">
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
                     <div
-                        style="font-size: 0.8125rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px;">
-                        <span>ID: #XSC-{{ scan.id }}</span>
-                        <span style="opacity: 0.3;">|</span>
-                        <span>{{ scan.created_at|date:"M d, Y • H:i" }}</span>
+                        style="width: 48px; height: 48px; min-width: 48px; border-radius: 12px; background: rgba(0, 243, 255, 0.05); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 243, 255, 0.1);">
+                        <span style="font-size: 1.5rem;">🛰️</span>
+                    </div>
+                    <div style="overflow: hidden;">
+                        <div style="font-weight: 700; font-size: 1.125rem; margin-bottom: 4px; color: var(--text-primary); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                            onclick="location.href='{% url 'scan_detail' scan.id %}'">{{ scan.target_url }}</div>
+                        <div
+                            style="font-size: 0.8125rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px;">
+                            <span>ID: #XSC-{{ scan.id }}</span>
+                            <span style="opacity: 0.3;">|</span>
+                            <span>{{ scan.created_at|date:"M d, Y • H:i" }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div style="display: flex; align-items: center; gap: 2rem;">
-                <div style="text-align: right;">
-                    <div
-                        style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
-                        Mode</div>
-                    <span class="badge"
-                        style="background: rgba(0, 243, 255, 0.05); color: var(--accent); border: 1px solid rgba(0, 243, 255, 0.2);">
-                        {{ scan.scan_type }}
-                    </span>
-                </div>
+                <div class="scan-item-actions">
+                    <div class="scan-meta-group">
+                        <div style="text-align: right;">
+                            <div
+                                style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                                Mode</div>
+                            <span class="badge"
+                                style="background: rgba(0, 243, 255, 0.05); color: var(--accent); border: 1px solid rgba(0, 243, 255, 0.2);">
+                                {{ scan.scan_type }}
+                            </span>
+                        </div>
 
-                <div style="text-align: right;">
-                    <div
-                        style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
-                        Status</div>
-                    <span class="badge" style="
-                        {% if scan.status|lower == 'completed' %}background: rgba(0, 255, 157, 0.1); color: var(--success); border: 1px solid rgba(0, 255, 157, 0.2);
-                        {% elif scan.status|lower == 'running' %}background: rgba(0, 184, 255, 0.1); color: var(--info); border: 1px solid rgba(0, 184, 255, 0.2);
-                        {% else %}background: rgba(255, 0, 85, 0.1); color: var(--danger); border: 1px solid rgba(255, 0, 85, 0.2);{% endif %}
-                    ">
-                        {{ scan.status|capfirst }}
-                    </span>
-                </div>
+                        <div style="text-align: right;">
+                            <div
+                                style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                                Status</div>
+                            <span class="badge" style="
+                                {% if scan.status|lower == 'completed' %}background: rgba(0, 255, 157, 0.1); color: var(--success); border: 1px solid rgba(0, 255, 157, 0.2);
+                                {% elif scan.status|lower == 'running' %}background: rgba(0, 184, 255, 0.1); color: var(--info); border: 1px solid rgba(0, 184, 255, 0.2);
+                                {% else %}background: rgba(255, 0, 85, 0.1); color: var(--danger); border: 1px solid rgba(255, 0, 85, 0.2);{% endif %}
+                            ">
+                                {{ scan.status|capfirst }}
+                            </span>
+                        </div>
+                    </div>
 
-                <div style="display: flex; gap: 0.75rem;">
-                    <a href="{% url 'scan_detail' scan.id %}" class="btn btn-primary"
-                        style="padding: 0.5rem 1rem; font-size: 0.8125rem;">
-                        Open Terminal
-                    </a>
-                    <form method="POST" action="{% url 'delete_scan' scan.id %}"
-                        onsubmit="return confirm('Erase this signal from history?');" style="margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline"
-                            style="padding: 0.5rem; border-color: rgba(255, 0, 85, 0.2); color: var(--danger);">
-                            🗑️
-                        </button>
-                    </form>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <a href="{% url 'scan_detail' scan.id %}" class="btn btn-primary"
+                            style="padding: 0.5rem 1rem; font-size: 0.8125rem;">
+                            Open Terminal
+                        </a>
+                        <form method="POST" action="{% url 'delete_scan' scan.id %}"
+                            onsubmit="return confirm('Erase this signal from history?');" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline"
+                                style="padding: 0.5rem; border-color: rgba(255, 0, 85, 0.2); color: var(--danger);">
+                                🗑️
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
