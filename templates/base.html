@@ -24,6 +24,10 @@
                 X<span style="color: var(--accent); text-shadow: 0 0 10px var(--accent-glow);">SCAN</span>
             </div>
 
+            <button class="mobile-menu-toggle" id="mobile-menu-close">
+                <span class="material-icons">close</span>
+            </button>
+
             <nav class="nav-section">
                 <div class="nav-title">Menu</div>
                 <ul>
@@ -57,6 +61,9 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <button class="mobile-menu-toggle-btn" id="mobile-menu-open">
+                ☰
+            </button>
             <header class="header">
                 {% if user.is_authenticated %}
                 <div class="user-profile">
@@ -86,6 +93,33 @@
         </main>
     </div>
     {% block extra_js %}{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuOpen = document.getElementById('mobile-menu-open');
+            const menuClose = document.getElementById('mobile-menu-close');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+
+            function toggleMenu() {
+                sidebar.classList.toggle('active');
+                document.body.classList.toggle('sidebar-open');
+            }
+
+            if (menuOpen) menuOpen.addEventListener('click', toggleMenu);
+            if (menuClose) menuClose.addEventListener('click', toggleMenu);
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function (event) {
+                if (window.innerWidth <= 768 &&
+                    document.body.classList.contains('sidebar-open') &&
+                    !sidebar.contains(event.target) &&
+                    event.target !== menuOpen) {
+                    sidebar.classList.remove('active');
+                    document.body.classList.remove('sidebar-open');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
