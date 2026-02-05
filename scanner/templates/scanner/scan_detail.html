@@ -5,15 +5,13 @@
 {% block content %}
 <div class="scanline"></div>
 
-<div class="header-actions"
-    style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+<div class="header-actions report-header-actions">
     <div>
         <div
             style="color: var(--accent); font-weight: 700; letter-spacing: 4px; font-size: 0.7rem; margin-bottom: 0.5rem; text-transform: uppercase; font-family: var(--font-mono);">
             [ ASSESS_REPORT_NODES ]
         </div>
-        <h2
-            style="font-family: 'Outfit', sans-serif; font-size: 3rem; margin: 0; text-shadow: 0 0 20px var(--accent-glow); font-weight: 900; letter-spacing: -1px;">
+        <h2 class="report-title">
             Target Analysis
         </h2>
     </div>
@@ -28,7 +26,7 @@
 <!-- Target Metadata -->
 <div class="card glass-card animate-enter animate-delay-100"
     style="margin-bottom: 2.5rem; border-left: 4px solid var(--accent); background: rgba(0, 0, 0, 0.4);">
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; padding: 1rem;">
+    <div class="report-metadata-grid">
         <div>
             <div
                 style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.75rem; font-family: var(--font-mono);">
@@ -85,7 +83,7 @@
     </div>
 
     {% if vulnerabilities %}
-    <div style="padding: 2rem; display: flex; flex-direction: column; gap: 2rem;">
+    <div class="findings-container">
         {% for v in vulnerabilities %}
         <div
             style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
@@ -106,7 +104,7 @@
             </div>
 
             <!-- Finding Body -->
-            <div style="padding: 1.5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+            <div class="finding-body-grid">
                 <div>
                     <div
                         style="color: var(--text-muted); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; font-family: var(--font-mono);">
