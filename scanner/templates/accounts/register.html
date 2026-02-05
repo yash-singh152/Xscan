@@ -31,7 +31,8 @@
             {% endfor %}
             {% endif %}
 
-            <form method="POST">
+            <form method="POST"
+                onsubmit="this.querySelector('button[type=submit]').disabled = true; this.querySelector('button[type=submit]').innerText = 'Creating...';">
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Username</label>

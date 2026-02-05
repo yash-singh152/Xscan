@@ -7,8 +7,8 @@ from django.contrib.auth.forms import AuthenticationForm
 
 def register_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip()
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
